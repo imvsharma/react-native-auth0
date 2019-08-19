@@ -14,10 +14,9 @@ import {
   } from "../styles/colors";
 import styles from "../styles/Login";
 
-const Auth0 = new Auth0({
-    domain: Config.AUTH0_DOMAIN,
-    clientId: Config.AUTH0_CLIENT_ID
-})
+const auth0 = new Auth0({ domain: "reactauth0auth.auth0.com" , clientId: 'EILl2eda7XSQA1CMucucxlQeUUiZl3Q9' });
+
+console.log('auth0', auth0);
 
 export default class Login extends Component {
     static navigationOptions = ({navigation}) => {
@@ -39,7 +38,7 @@ export default class Login extends Component {
     componentDidMount () {
         SInfo.getItem('accessToken', {}).then(accessToken => {
             if(accessToken) {
-                Auth0.auth.userInfo({token: accessToken}).then(data => {this.gotoAccount(data);}).catch(err => {
+                auth0.auth.userInfo({token: accessToken}).then(data => {this.gotoAccount(data);}).catch(err => {
                     SInfo.getItem("refreshToken", {}).then(refreshToken => { // get the refresh token from the secure storage
                         // request for a new access token using the refresh token 
                         auth0.auth
@@ -62,4 +61,19 @@ export default class Login extends Component {
             }
         })
     }
+
+    render() {
+        return (
+          <View style={styles.container}>
+            <ActivityIndicator
+              size="large"
+              color="#05a5d1"
+              animating={!this.state.hasInitialized}
+            />
+            {this.state.hasInitialized && (
+              <Button onPress={this.login} title="Login" color={buttonStyle} />
+            )}
+          </View>
+        );
+      }
 }
