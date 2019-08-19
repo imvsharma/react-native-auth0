@@ -7,6 +7,12 @@ import Config from "react-native-config";
 import DeviceInfo from "react-native-device-info";
 import SInfo from "react-native-sensitive-info";
 import RNRestart from "react-native-restart";
+import {
+    headerColorStyle,
+    headerTextColorStyle,
+    buttonStyle
+  } from "../styles/colors";
+import styles from "../styles/Login";
 
 const Auth0 = new Auth0({
     domain: Config.AUTH0_DOMAIN,
@@ -14,5 +20,19 @@ const Auth0 = new Auth0({
 })
 
 export default class Login extends Component {
-    
+    static navigationOptions = ({navigation}) => {
+        return {
+            headerTitle: "Login",
+            headerStyle: {
+                backgroundColor: headerColorStyle
+            },
+            headerTitleStyle:{
+                color: headerTextColorStyle
+            }
+        }
+    }
+
+    state = {
+        hasInitialized: false
+    };
 }
