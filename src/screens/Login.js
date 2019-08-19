@@ -35,4 +35,31 @@ export default class Login extends Component {
     state = {
         hasInitialized: false
     };
+
+    componentDidMount () {
+        SInfo.getItem('accessToken', {}).then(accessToken => {
+            if(accessToken) {
+                Auth0.auth.userInfo({token: accessToken}).then(data => {this.gotoAccount(data);}).catch(err => {
+                    SInfo.getItem("refreshToken", {}).then(refreshToken => { // get the refresh token from the secure storage
+                        // request for a new access token using the refresh token 
+                        auth0.auth
+                          .refreshToken({ refreshToken: refreshToken })
+                          .then(newAccessToken => {
+                            SInfo.setItem("accessToken", newAccessToken);
+                            RNRestart.Restart();
+                          })
+                          .catch(accessTokenErr => {
+                            console.log("error getting new access token: ", accessTokenErr);
+                          });
+                      });
+                })
+            }else {
+                this.setState({
+                    hasInitialized: true
+                })
+
+                console.log("no access token");
+            }
+        })
+    }
 }
