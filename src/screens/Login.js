@@ -76,4 +76,44 @@ export default class Login extends Component {
           </View>
         );
       }
+
+    login = () => {
+      auth0.webAuth.authorize({
+        scope: "openid offline_access profile email",
+        audience: "https://reactauth0auth.auth0.com/userinfo",
+        device: DeviceInfo.getUniqueID(),
+        prompt: 'login'
+      }).then(res => {
+          SInfo.setItem("accessToken", res.accessToken, {});
+          SInfo.setItem("refreshToken", res.refreshToken, {});
+          auth0.auth.userInfo({token: res.accessToken}).then(data => {
+            this.gotoAccount(data);
+          }).catch(err => {
+            console.log("error occurred while trying to get user details: ", err);
+          })
+      }).catch(err => {
+        console.log("error occurred while trying to authenticate: ", err);
+      })
+    }
+
+    gotoAccount = data => {
+      this.setState({
+        hasInitialized: true
+      })
+
+      const resetAction = StackActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({
+            routeName: "Account",
+            params: {
+              name: data.name,
+              picture: data.picture
+            }
+          })
+        ]
+      })
+
+      this.props.navigation.dispatch(resetAction);
+    }
 }
