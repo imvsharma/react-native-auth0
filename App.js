@@ -27,7 +27,7 @@ import {
 export default class App extends Component {
   render () {
     return (
-      <View>
+      <View style={styles.container}>
         <Text>
         Auth App
         </Text>
@@ -35,3 +35,10 @@ export default class App extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff'
+  }
+})
