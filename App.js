@@ -23,14 +23,13 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import Root from './Root';
 
 export default class App extends Component {
   render () {
     return (
       <View style={styles.container}>
-        <Text>
-        Auth App
-        </Text>
+        <Root />
       </View>
     )
   }
