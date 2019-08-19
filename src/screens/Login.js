@@ -13,8 +13,8 @@ import {
     buttonStyle
   } from "../styles/colors";
 import styles from "../styles/Login";
-
-const auth0 = new Auth0({ domain: "reactauth0auth.auth0.com" , clientId: 'EILl2eda7XSQA1CMucucxlQeUUiZl3Q9' });
+console.log(Config.AUTH0_DOMAIN)
+const auth0 = new Auth0({ domain: Config.AUTH0_DOMAIN , clientId: Config.AUTH0_CLIENT_ID });
 
 console.log('auth0', auth0);
 
@@ -79,8 +79,8 @@ export default class Login extends Component {
 
     login = () => {
       auth0.webAuth.authorize({
-        scope: "openid offline_access profile email",
-        audience: "https://reactauth0auth.auth0.com/userinfo",
+        scope: Config.AUTHO_SCOPE,
+        audience: Config.AUTH0_AUDIENCE,
         device: DeviceInfo.getUniqueID(),
         prompt: 'login'
       }).then(res => {
